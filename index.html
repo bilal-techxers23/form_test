@@ -315,20 +315,45 @@
         <script type="text/javascript" src="https://mautic.sahi1.in/form/generate.js?id=1"></script> -->
 
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                setTimeout(function() {
-                    const mauticForm = document.querySelector('form[data-mautic-form]');
-                    if (mauticForm) {
-                        const currentAction = mauticForm.getAttribute('action');
-                        if (currentAction && currentAction.startsWith('http://')) {
-                            const httpsAction = currentAction.replace('http://', 'https://');
-                            mauticForm.setAttribute('action', httpsAction);
-                            console.log('Fixed form action from HTTP to HTTPS:', httpsAction);
-                        }
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const mauticForm = document.querySelector('form[data-mautic-form]');
+                if (mauticForm) {
+                    // Fix form action
+                    const currentAction = mauticForm.getAttribute('action');
+                    if (currentAction && currentAction.startsWith('http://')) {
+                        const httpsAction = currentAction.replace('http://', 'https://');
+                        mauticForm.setAttribute('action', httpsAction);
+                        console.log('Fixed form action:', httpsAction);
                     }
-                }, 500);
-            });
-        </script>
+                    
+                    // Also fix the script source if needed
+                    const scripts = document.querySelectorAll('script[src*="mautic.sahi1.in"]');
+                    scripts.forEach(script => {
+                        if (script.src.startsWith('http://')) {
+                            const newSrc = script.src.replace('http://', 'https://');
+                            script.src = newSrc;
+                        }
+                    });
+                }
+            }, 500);
+        });
+
+        // <script>
+        //     document.addEventListener('DOMContentLoaded', function() {
+        //         setTimeout(function() {
+        //             const mauticForm = document.querySelector('form[data-mautic-form]');
+        //             if (mauticForm) {
+        //                 const currentAction = mauticForm.getAttribute('action');
+        //                 if (currentAction && currentAction.startsWith('http://')) {
+        //                     const httpsAction = currentAction.replace('http://', 'https://');
+        //                     mauticForm.setAttribute('action', httpsAction);
+        //                     console.log('Fixed form action from HTTP to HTTPS:', httpsAction);
+        //                 }
+        //             }
+        //         }, 500);
+        //     });
+        // </script>
     </div>
 </body>
 </html>
